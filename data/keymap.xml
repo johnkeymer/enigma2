@@ -752,6 +752,7 @@
 		<key id="KEY_PREVIOUS" mapto="prevBouquet" flags="m" />
 		<key id="KEY_MENU" mapto="menu" flags="m"/>
 		<key id="KEY_TEXT" mapto="input_date_time" flags="m"/>
+    <key id="KEY_BACK" mapto="back" flags="m"/>
 		<key id="KEY_I" mapto="info" flags="b"/>
 		<key id="KEY_INFO" mapto="info" flags="b"/>
 		<key id="KEY_INFO" mapto="infolong" flags="l"/>

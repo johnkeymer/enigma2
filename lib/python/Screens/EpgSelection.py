@@ -319,8 +319,8 @@ class EPGSelection(Screen, HelpableScreen):
 
 			self['epgactions'] = HelpableActionMap(self, 'EPGSelectActions', 
 				{
-					'nextService': (self.nextService, _('Jump forward 24 hours')),
-					'prevService': (self.prevService, _('Jump back 24 hours')),
+					'nextService': (self.prevPage, _('Page up')),
+					'prevService': (self.nextPage, _('Page down')),
 					'nextBouquet': (self.nextBouquet, _('Goto next bouquet')),
 					'prevBouquet': (self.prevBouquet, _('Goto previous bouquet')),
 					'input_date_time': (self.enterDateTime, _('Goto specific data/time')),
@@ -329,20 +329,21 @@ class EPGSelection(Screen, HelpableScreen):
 					'infolong': (self.InfoLong, _('Show single epg for current channel')),
 					'tv': (self.Bouquetlist, _('Toggle between bouquet/epg lists')),
 					'tvlong': (self.togglePIG, _('Toggle Picture In Graphics')),
-					'menu': (self.createSetup, _('Setup menu'))
+					'menu': (self.createSetup, _('Setup menu')),
+                    'back': (self.BackToBouquets, _('Show bouquet list'))
 				}, -1)
 			self['epgactions'].csel = self
 
 			self['input_actions'] = HelpableNumberActionMap(self, 'NumberActions', 
 				{
 					'1': (self.keyNumberGlobal, _('Reduce time scale')),
-					'2': (self.keyNumberGlobal, _('Page up')),
+					'2': (self.keyNumberGlobal, _('Jump back 24 hours')),
 					'3': (self.keyNumberGlobal, _('Increase time scale')),
 					'4': (self.keyNumberGlobal, _('page left')),
 					'5': (self.keyNumberGlobal, _('Jump to current time')),
 					'6': (self.keyNumberGlobal, _('Page right')),
 					'7': (self.keyNumberGlobal, _('No of items switch (increase or reduced)')),
-					'8': (self.keyNumberGlobal, _('Page down')),
+					'8': (self.keyNumberGlobal, _('Jump forward 24 hours')),
 					'9': (self.keyNumberGlobal, _('Jump to prime time')),
 					'0': (self.keyNumberGlobal, _('Move to home of list'))
 				}, -1)
@@ -842,6 +843,10 @@ class EPGSelection(Screen, HelpableScreen):
 		else:
 			self.updEvent(+1)
 
+	def BackToBouquets(self):
+		self.close('reopengraph')
+		self.Bouquetlist
+        
 	def Bouquetlist(self):
 		if not self.bouquetlist_active:
 			self.BouquetlistShow()
@@ -1951,7 +1956,7 @@ class EPGSelection(Screen, HelpableScreen):
 					prevtimeperiod.setValue(timeperiod)
 					self.moveTimeLines()
 			elif number == 2:
-				self.prevPage()
+                                self.prevService()
 			elif number == 3:
 				timeperiod = int(prevtimeperiod.value)
 				if timeperiod < 300:
@@ -1977,7 +1982,7 @@ class EPGSelection(Screen, HelpableScreen):
 				self['list'].fillGraphEPG(None)
 				self.moveTimeLines()
 			elif number == 8:
-				self.nextPage()
+                                self.nextService()
 			elif number == 9:
 				basetime = localtime(self['list'].getTimeBase())
 				basetime = (basetime[0], basetime[1], basetime[2], int(primetimehour.value), int(primetimemins.value), 0, basetime[6], basetime[7], basetime[8])
